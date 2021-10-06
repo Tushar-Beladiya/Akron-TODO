@@ -5,11 +5,20 @@ const catchAsync = require("../utils/catchAsync");
 exports.todoAnalytics = catchAsync(async (req, res) => {
   const { startDate, endDate } = req.body;
   var whereConds = {};
+  var completeCond = {};
+
+  completeCond["status"] = "completed";
 
   const TODAY = new Date();
   const last7Day = new Date(TODAY.setDate(TODAY.getDate() - 7));
 
   if (startDate && endDate) {
+    completeCond = {
+      ...completeCond,
+      created_at: {
+        [Op.between]: [startDate, endDate],
+      },
+    };
     whereConds = {
       ...whereConds,
       created_at: {
@@ -17,6 +26,12 @@ exports.todoAnalytics = catchAsync(async (req, res) => {
       },
     };
   } else {
+    completeCond = {
+      ...completeCond,
+      created_at: {
+        [Op.between]: [last7Day, new Date()],
+      },
+    };
     whereConds = {
       ...whereConds,
       created_at: {
@@ -34,7 +49,7 @@ exports.todoAnalytics = catchAsync(async (req, res) => {
 
   const completedTodos = await Todo.findAll({
     group: ["completed_at"],
-    where: whereConds,
+    where: completeCond,
   });
 
   res.json({ status: "Success", result: { createdTodos, completedTodos } });
