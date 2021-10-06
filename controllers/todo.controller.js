@@ -59,10 +59,13 @@ exports.updateTodo = catchAsync(async (req, res, next) => {
 
 exports.completeTodo = catchAsync(async (req, res, next) => {
   const { id } = req.params;
+  console.log(req.body.isChecked);
+  const status = req.body.isChecked === true ? "completed" : "Incomplate";
 
+  console.log(status);
   const body = {
     completed_at: new Date(),
-    status: "completed",
+    status,
     date: new Date(),
   };
 

@@ -17,7 +17,6 @@ exports.todoAnalytics = catchAsync(async (req, res) => {
       },
     };
   } else {
-    console.log("hello");
     whereConds = {
       ...whereConds,
       created_at: {
@@ -38,5 +37,5 @@ exports.todoAnalytics = catchAsync(async (req, res) => {
     where: whereConds,
   });
 
-  res.json({ status: "Success", resutl: { createdTodos, completedTodos } });
+  res.json({ status: "Success", result: { createdTodos, completedTodos } });
 });
