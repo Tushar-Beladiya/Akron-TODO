@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const Todo = require("../models/todo");
 const catchAsync = require("../utils/catchAsync");
 
@@ -83,6 +83,11 @@ exports.mostproductiveDay = catchAsync(async (req, res, next) => {
     attributes: ["date", [Sequelize.literal(`COUNT(*)`), "Total"]],
     group: ["date"],
     order: [[Sequelize.literal("Total"), "desc"]],
+    where: {
+      date: {
+        [Op.ne]: null,
+      },
+    },
   });
 
   return res.json({ status: "Success", result: data });
