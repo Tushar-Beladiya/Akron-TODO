@@ -4,6 +4,10 @@ const catchAsync = require("../utils/catchAsync");
 
 exports.todoAnalytics = catchAsync(async (req, res) => {
   const { startDate, endDate } = req.body;
+  var whereConds = {};
+
+  const TODAY = new Date();
+  const last7Day = new Date(TODAY.setDate(TODAY.getDate() - 7));
 
   if (startDate && endDate) {
     whereConds = {
@@ -13,10 +17,11 @@ exports.todoAnalytics = catchAsync(async (req, res) => {
       },
     };
   } else {
+    console.log("hello");
     whereConds = {
       ...whereConds,
       created_at: {
-        [Op.between]: [startDate, endDate],
+        [Op.between]: [last7Day, new Date()],
       },
     };
   }
