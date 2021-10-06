@@ -21,6 +21,9 @@ const Todo = db.define(
     status: {
       type: Sequelize.STRING,
     },
+    date: {
+      type: Sequelize.DATE,
+    },
   },
   {
     timestamps: false,

@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 const routes = require("./routes/router");
 const { db } = require("./config/db");
 const AppError = require("./utils/appError");
 const errorController = require("./controllers/errorController");
+
+app.use(cors());
 
 db.authenticate()
   .then(() => console.log("Database Connected..."))

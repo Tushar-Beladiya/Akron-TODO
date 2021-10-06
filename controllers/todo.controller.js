@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const Todo = require("../models/todo");
 const catchAsync = require("../utils/catchAsync");
 
@@ -62,6 +63,7 @@ exports.completeTodo = catchAsync(async (req, res, next) => {
   const body = {
     completed_at: new Date(),
     status: "completed",
+    date: new Date(),
   };
 
   const todoData = await Todo.update(body, {
@@ -71,4 +73,15 @@ exports.completeTodo = catchAsync(async (req, res, next) => {
   });
 
   res.json({ status: "Success", message: "Task has been Completed" });
+});
+
+exports.mostproductiveDay = catchAsync(async (req, res, next) => {
+  const data = await Todo.findAll({
+    attributes: ["date", [Sequelize.literal(`COUNT(*)`), "Total"]],
+    group: ["date"],
+    order: [[Sequelize.literal("Total"), "desc"]],
+    limit: 1,
+  });
+
+  return res.json({ status: "Success", result: data });
 });
