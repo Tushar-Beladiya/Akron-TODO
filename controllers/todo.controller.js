@@ -83,7 +83,6 @@ exports.mostproductiveDay = catchAsync(async (req, res, next) => {
     attributes: ["date", [Sequelize.literal(`COUNT(*)`), "Total"]],
     group: ["date"],
     order: [[Sequelize.literal("Total"), "desc"]],
-    limit: 1,
   });
 
   return res.json({ status: "Success", result: data });
